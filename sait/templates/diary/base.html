@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дневник путешественника | ВТБ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'VTB Group UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        /* Хедер в стиле ВТБ */
+        .header {
+            background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(30, 67, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+        }
+
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: #FFDD00;
+            color: #1E4388;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            background: rgba(255, 221, 0, 0.2);
+            color: #FFDD00;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: #FFDD00;
+            color: #1E4388;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        /* Карточки в стиле ВТБ */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(30, 67, 136, 0.1);
+            border: 1px solid #e0e7ff;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(30, 67, 136, 0.15);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(30, 67, 136, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 67, 136, 0.4);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #FFDD00 0%, #FFC800 100%);
+            color: #1E4388;
+        }
+
+        .btn-secondary:hover {
+            color: #1E4388;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #1E4388;
+            color: #1E4388;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: #1E4388;
+            color: white;
+        }
+
+        /* Футер в стиле ВТБ */
+        .footer {
+            background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 6rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffdd00, #408e87, #83b356, #1e4388);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Специфические стили для контента */
+        .page-title {
+            color: #1E4388;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFDD00, #1E4388);
+            border-radius: 2px;
+        }
+
+        .trip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .trip-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(30, 67, 136, 0.1);
+            border: 1px solid #e0e7ff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #FFDD00, #1E4388);
+        }
+
+        .trip-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(30, 67, 136, 0.15);
+        }
+
+        .trip-title {
+            color: #1E4388;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .trip-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .trip-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .country-badge {
+            background: linear-gradient(135deg, #FFDD00 0%, #FFC800 100%);
+            color: #1E4388;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .rating-badge {
+            background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Стили для фотографий */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .photo-item {
+            text-align: center;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #e0e7ff;
+            transition: all 0.3s ease;
+        }
+
+        .photo-item img:hover {
+            transform: scale(1.05);
+            border-color: #1E4388;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(30, 67, 136, 0.1);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #1E4388;
+        }
+
+        /* Стили для пагинации */
+        .pagination-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            background: white;
+            color: #1E4388;
+            text-decoration: none;
+            border: 2px solid #e0e7ff;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            min-width: 44px;
+            height: 44px;
+        }
+
+        .pagination-btn:hover {
+            background: #1E4388;
+            color: white;
+            border-color: #1E4388;
+            transform: translateY(-2px);
+        }
+
+        .pagination-active {
+            background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%);
+            color: white;
+            border-color: #1E4388;
+        }
+
+        .pagination-disabled {
+            background: #f8f9fa;
+            color: #999;
+            border-color: #e9ecef;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .pagination-disabled:hover {
+            background: #f8f9fa;
+            color: #999;
+            border-color: #e9ecef;
+            transform: none;
+        }
+
+        /* Стили для форм */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1E4388;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e7ff;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #1E4388;
+            box-shadow: 0 0 0 3px rgba(30, 67, 136, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Стили для отзывов */
+        .review-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #e0e7ff;
+            margin-bottom: 1rem;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .review-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .review-avatar {
+            width: 40px;
+            height: 40px;
+            background: #1E4388;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .review-rating {
+            color: #FFDD00;
+            font-size: 1.2rem;
+        }
+
+        /* Сообщения */
+        .messages {
+            margin-bottom: 2rem;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left-color: #ffc107;
+        }
+
+        /* Адаптивность для мобильных */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 20px;
+                flex-direction: column;
+                height: auto;
+                padding: 1rem 0;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+
+            .user-menu {
+                margin-left: 0;
+                padding-left: 0;
+                border-left: none;
+                margin-top: 1rem;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .trip-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pagination-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                min-width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <div class="logo-icon">✈</div>
+                <span>Дневник путешественника</span>
+            </div>
+
+            <ul class="nav-links">
+    <li><a href="{% url 'home' %}">🏠 Главная</a></li>
+    <li><a href="{% url 'travel_map' %}">🗺 Карта</a></li>
+
+    {% if user.is_authenticated %}
+        <div class="user-menu">
+            <li><a href="{% url 'add_trip' %}">✈️ Добавить поездку</a></li>
+            <li>
+                <a href="{% url 'profile' %}">
+                    <div class="user-avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+                    👤 {{ user.username }}
+                </a>
+            </li>
+            <li>
+    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; font-weight: 500; display: flex; align-items: center; gap: 8px; font-family: inherit; font-size: inherit;">
+            🚪 Выйти
+        </button>
+    </form>
+</li>
+        </div>
+    {% else %}
+        <div class="user-menu">
+            <li><a href="{% url 'login' %}">🔑 Войти</a></li>
+            <li><a href="{% url 'register' %}" class="btn-outline">📝 Регистрация</a></li>
+        </div>
+    {% endif %}
+</ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Сообщения -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,125 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="card">
+    <article>
+        <!-- Заголовок поездки -->
+        <header style="margin-bottom: 3rem; text-align: center;">
+            <h1 class="page-title">{{ trip.title }}</h1>
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                <div class="country-badge" style="font-size: 1rem; padding: 8px 20px;">
+                    🌍 {{ trip.country }}
+                </div>
+                <div style="background: #e0e7ff; color: #1E4388; padding: 8px 20px; border-radius: 20px; font-weight: 600;">
+                    📅 {{ trip.start_date|date:"d.m.Y" }} - {{ trip.end_date|date:"d.m.Y" }}
+                </div>
+                {% if trip.average_rating > 0 %}
+                <div style="background: #FFDD00; color: #1E4388; padding: 8px 20px; border-radius: 20px; font-weight: 600;">
+                    ⭐ {{ trip.average_rating }} ({{ trip.reviews_count }} отзывов)
+                </div>
+                {% endif %}
+            </div>
+        </header>
+
+        <!-- Описание поездки -->
+        <section style="background: #f8f9fa; padding: 2.5rem; border-radius: 12px; margin-bottom: 3rem;">
+            <h2 style="color: #1E4388; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                📝 Рассказ о поездке
+            </h2>
+            <div style="line-height: 1.8; font-size: 1.1rem; color: #444;">
+                {{ trip.description|linebreaks }}
+            </div>
+        </section>
+
+        <!-- Фотографии -->
+        {% if trip.photos.all %}
+        <section style="margin-bottom: 3rem;">
+            <h2 style="color: #1E4388; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px;">
+                📸 Фотографии из поездки
+            </h2>
+            <div class="photo-grid">
+                {% for photo in trip.photos.all %}
+                <div class="photo-item">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.caption }}"
+                         style="max-width: 100%; height: 220px; object-fit: cover; border-radius: 12px; border: 2px solid #e0e7ff;">
+                    {% if photo.caption %}
+                    <p style="margin-top: 1rem; color: #666; font-style: italic; font-weight: 500;">{{ photo.caption }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Отзывы -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="color: #1E4388; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px;">
+                💬 Отзывы ({{ reviews.count }})
+            </h2>
+
+            <!-- Форма добавления отзыва -->
+            {% if user.is_authenticated %}
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h3 style="color: #1E4388; margin-bottom: 1rem;">Оставить отзыв</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Оценка:</label>
+                        {{ form.rating }}
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Комментарий:</label>
+                        {{ form.comment }}
+                    </div>
+                    <button type="submit" class="btn">Отправить отзыв</button>
+                </form>
+            </div>
+            {% else %}
+            <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem;">
+                <p style="margin: 0; color: #856404;">
+                    🔒 Для добавления отзыва необходимо
+                    <a href="{% url 'login' %}?next={{ request.path }}" style="color: #1E4388; font-weight: 600;">авторизоваться</a>
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- Список отзывов -->
+            {% if reviews %}
+            <div style="display: grid; gap: 1.5rem;">
+                {% for review in reviews %}
+                <div style="background: white; padding: 1.5rem; border-radius: 10px; border: 1px solid #e0e7ff;">
+                    <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; background: #1E4388; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                {{ review.user.username|first|upper }}
+                            </div>
+                            <div>
+                                <strong style="color: #1E4388;">{{ review.user.username }}</strong>
+                                <div style="color: #666; font-size: 0.9rem;">
+                                    {{ review.created_at|date:"d.m.Y H:i" }}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #FFDD00; font-size: 1.2rem;">
+                            {{ review.get_rating_stars }}
+                        </div>
+                    </div>
+                    <p style="color: #444; line-height: 1.6; margin: 0;">{{ review.comment }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="text-align: center; padding: 2rem; color: #666;">
+                <p>Пока нет отзывов. Будьте первым!</p>
+            </div>
+            {% endif %}
+        </section>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid #e0e7ff; text-align: center;">
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                ← Назад к списку поездок
+            </a>
+        </footer>
+    </article>
+</div>
+{% endblock %}

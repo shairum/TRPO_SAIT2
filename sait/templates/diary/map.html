@@ -1,0 +1,33 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="text-align: center; padding: 2rem;">
+        <h1 class="page-title">🗺️ Карта путешествий</h1>
+
+        <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                    padding: 4rem 2rem;
+                    border-radius: 16px;
+                    margin: 3rem 0;
+                    border: 2px dashed #1E4388;">
+            <div style="font-size: 5rem; margin-bottom: 2rem;">🌍</div>
+            <h2 style="color: #1E4388; font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700;">
+                Здесь когда-нибудь будет карта!
+            </h2>
+            <p style="color: #666; font-size: 1.2rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                В будущем здесь появится интерактивная карта со всеми вашими путешествиями,
+                маршрутами и фотографиями в корпоративном стиле ВТБ.
+            </p>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 3rem;">
+            <a href="{% url 'home' %}" class="btn">
+                🏠 На главную
+            </a>
+            <button class="btn btn-secondary" onclick="alert('Функция в разработке!')">
+                🔔 Уведомить о запуске
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

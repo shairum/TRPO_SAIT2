@@ -1,0 +1,104 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; gap: 2rem; align-items: flex-start;">
+        <!-- Боковая панель профиля -->
+        <div style="flex: 1; background: #f8f9fa; padding: 2rem; border-radius: 12px;">
+            <div style="text-align: center;">
+                <div style="width: 120px; height: 120px; border-radius: 50%; background: #1E4388; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">
+                    {{ user.username|first|upper }}
+                </div>
+                <h2 style="color: #1E4388; margin-top: 1rem;">{{ user.username }}</h2>
+                <div style="color: #1E4388; font-weight: 600; margin: 0.5rem 0;">
+                   🎯 Активный пользователь
+                </div>
+                <p style="color: #666; margin: 0.5rem 0;">{{ user.first_name }} {{ user.last_name }}</p>
+                <p style="color: #666; margin: 0.5rem 0;">{{ user.email }}</p>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div style="font-size: 0.9rem; color: #666;">Дата регистрации</div>
+                    <div style="font-weight: 600; color: #1E4388;">{{ user.date_joined|date:"d.m.Y" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div style="flex: 2;">
+            <h1 style="color: #1E4388; margin-bottom: 2rem;">Личный кабинет</h1>
+
+            <!-- Статистика -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: linear-gradient(135deg, #1E4388, #152F5D); color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem;">📊</div>
+                    <h3>{{ user_trips.count }}</h3>
+                    <p>Мои поездки</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #FFDD00, #FFC800); color: #1E4388; padding: 1.5rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem;">⭐</div>
+                    <h3>{{ user_reviews.count }}</h3>
+                    <p>Мои отзывы</p>
+                </div>
+            </div>
+
+            <!-- Мои поездки -->
+            <section style="margin-bottom: 2rem;">
+                <h2 style="color: #1E4388; margin-bottom: 1rem;">Мои поездки</h2>
+                {% if user_trips %}
+                    <div style="display: grid; gap: 1rem;">
+                        {% for trip in user_trips %}
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #1E4388;">
+                            <h3 style="margin: 0 0 0.5rem 0;">
+                                <a href="{% url 'trip_detail' trip.pk %}" style="color: inherit; text-decoration: none;">
+                                    {{ trip.title }}
+                                </a>
+                            </h3>
+                            <div style="color: #666; font-size: 0.9rem;">
+                                📍 {{ trip.country }} | 📅 {{ trip.start_date|date:"d.m.Y" }} - {{ trip.end_date|date:"d.m.Y" }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="color: #666; text-align: center; padding: 2rem;">
+                        У вас пока нет поездок.
+                    </p>
+                {% endif %}
+            </section>
+
+            <!-- Мои отзывы -->
+            <section>
+                <h2 style="color: #1E4388; margin-bottom: 1rem;">Мои отзывы</h2>
+                {% if user_reviews %}
+                    <div style="display: grid; gap: 1rem;">
+                        {% for review in user_reviews %}
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #FFDD00;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                <h4 style="margin: 0; color: #1E4388;">
+                                    <a href="{% url 'trip_detail' review.trip.pk %}" style="color: inherit; text-decoration: none;">
+                                        {{ review.trip.title }}
+                                    </a>
+                                </h4>
+                                <div style="color: #FFDD00; font-size: 1rem;">
+                                    {{ review.get_rating_display }}
+                                </div>
+                            </div>
+                            <p style="color: #666; margin: 0; font-size: 0.9rem;">{{ review.comment|truncatewords:20 }}</p>
+                            <div style="color: #999; font-size: 0.8rem; margin-top: 0.5rem;">
+                                {{ review.created_at|date:"d.m.Y H:i" }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="color: #666; text-align: center; padding: 2rem;">
+                        Вы еще не оставляли отзывов.
+                    </p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

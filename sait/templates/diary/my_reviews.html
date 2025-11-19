@@ -1,0 +1,43 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1 class="page-title">⭐ Мои отзывы</h1>
+    
+    {% if reviews %}
+        <div style="display: grid; gap: 1.5rem;">
+            {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-user">
+                        <div class="review-avatar">
+                            {{ review.user.username|first|upper }}
+                        </div>
+                        <div>
+                            <strong style="color: #1E4388;">{{ review.trip.title }}</strong>
+                            <div style="color: #666; font-size: 0.9rem;">
+                                📍 {{ review.trip.country }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-rating">
+                        {{ review.get_rating_stars }}
+                    </div>
+                </div>
+                <p style="color: #444; line-height: 1.6; margin: 0;">{{ review.comment }}</p>
+                <div style="color: #999; font-size: 0.8rem; margin-top: 1rem;">
+                    {{ review.created_at|date:"d.m.Y H:i" }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">⭐</div>
+            <h2 style="color: #1E4388; margin-bottom: 1rem;">У вас пока нет отзывов</h2>
+            <p style="color: #666; font-size: 1.1rem;">Оставляйте отзывы к поездкам, чтобы они здесь появились!</p>
+            <a href="{% url 'home' %}" class="btn">Перейти к поездкам</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

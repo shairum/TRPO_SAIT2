@@ -1,0 +1,106 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <h1 class="page-title">✈️ Добавить поездку</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label">Название поездки *</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div style="color: #dc3545; font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Страна *</label>
+            {{ form.country }}
+            {% if form.country.errors %}
+                <div style="color: #dc3545; font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.country.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label class="form-label">Дата начала *</label>
+                {{ form.start_date }}
+                {% if form.start_date.errors %}
+                    <div style="color: #dc3545; font-size: 0.9rem; margin-top: 0.25rem;">
+                        {{ form.start_date.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Дата окончания *</label>
+                {{ form.end_date }}
+                {% if form.end_date.errors %}
+                    <div style="color: #dc3545; font-size: 0.9rem; margin-top: 0.25rem;">
+                        {{ form.end_date.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Рассказ о поездке *</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div style="color: #dc3545; font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.description.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Фотографии</label>
+            <input type="file" name="photos" multiple accept="image/*" class="form-control">
+            <div style="font-size: 0.8rem; color: #666; margin-top: 0.25rem;">
+                Можно выбрать несколько файлов (JPEG, PNG, GIF)
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn">
+                ✈️ Добавить поездку
+            </button>
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                ← Отмена
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e0e7ff;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #1E4388;
+        box-shadow: 0 0 0 3px rgba(30, 67, 136, 0.1);
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    input[type="file"] {
+        padding: 8px;
+    }
+</style>
+{% endblock %}

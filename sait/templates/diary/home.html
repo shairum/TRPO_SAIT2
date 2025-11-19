@@ -1,0 +1,41 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1 class="page-title">Мои путешествия</h1>
+
+    {% if trips %}
+        <div class="trip-grid">
+            {% for trip in trips %}
+                <div class="trip-card">
+                    <h2 class="trip-title">
+                        <a href="{{ trip.get_absolute_url }}">
+                            {{ trip.title }}
+                        </a>
+                    </h2>
+
+                    <div class="trip-meta">
+                        <div class="trip-meta-item">
+                            📍 {{ trip.country }}
+                        </div>
+                        <div class="trip-meta-item">
+                            📅 {{ trip.start_date|date:"d.m.Y" }} - {{ trip.end_date|date:"d.m.Y" }}
+                        </div>
+                    </div>
+
+                    <p>{{ trip.description|truncatewords:25 }}</p>
+
+                    <a href="{{ trip.get_absolute_url }}" class="btn">
+                        Читать рассказ →
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">🌍</div>
+            <h2>Пока нет записей о поездках</h2>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
