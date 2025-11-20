@@ -19,6 +19,18 @@
                 </div>
                 {% endif %}
             </div>
+
+            <!-- Кнопки редактирования/удаления поездки (только для автора) -->
+            {% if user == trip.user %}
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <a href="{% url 'edit_trip' trip.pk %}" class="btn">
+                    ✏️ Редактировать поездку
+                </a>
+                <a href="{% url 'delete_trip' trip.pk %}" class="btn" style="background: #dc3545;">
+                    🗑 Удалить поездку
+                </a>
+            </div>
+            {% endif %}
         </header>
 
         <!-- Описание поездки -->
@@ -88,7 +100,7 @@
             <div style="display: grid; gap: 1.5rem;">
                 {% for review in reviews %}
                 <div style="background: white; padding: 1.5rem; border-radius: 10px; border: 1px solid #e0e7ff;">
-                    <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
                         <div style="display: flex; align-items: center; gap: 1rem;">
                             <div style="width: 40px; height: 40px; background: #1E4388; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                 {{ review.user.username|first|upper }}
@@ -100,8 +112,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="color: #FFDD00; font-size: 1.2rem;">
-                            {{ review.get_rating_stars }}
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="color: #FFDD00; font-size: 1.2rem;">
+                                {{ review.get_rating_stars }}
+                            </div>
+                            {% if user == review.user %}
+                            <div style="display: flex; gap: 0.5rem; margin-left: 1rem;">
+                                <a href="{% url 'edit_review' review.pk %}" class="btn" style="padding: 6px 12px; font-size: 0.8rem;">
+                                    ✏️
+                                </a>
+                                <a href="{% url 'delete_review' review.pk %}" class="btn" style="padding: 6px 12px; font-size: 0.8rem; background: #dc3545;">
+                                    🗑
+                                </a>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     <p style="color: #444; line-height: 1.6; margin: 0;">{{ review.comment }}</p>

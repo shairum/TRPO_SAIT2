@@ -1,11 +1,12 @@
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
+from django.http import Http404
 from .models import Trip, Review, UserProfile, TripPhoto
 from .forms import ReviewForm, CustomUserCreationForm, TripForm
+
 
 def home(request):
     trips_list = Trip.objects.all().order_by('-start_date')
@@ -21,6 +22,7 @@ def home(request):
         trips = paginator.page(paginator.num_pages)
 
     return render(request, 'diary/home.html', {'trips': trips})
+
 
 def trip_detail(request, pk):
     trip = get_object_or_404(Trip, pk=pk)
@@ -52,6 +54,7 @@ def trip_detail(request, pk):
         'form': form
     })
 
+
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -67,6 +70,7 @@ def register(request):
 
     return render(request, 'diary/register.html', {'form': form})
 
+
 @login_required
 def profile(request):
     user_profile = request.user.profile
@@ -79,10 +83,11 @@ def profile(request):
         'user_reviews': user_reviews
     })
 
+
 @login_required
 def add_trip(request):
     if request.method == 'POST':
-        form = TripForm(request.POST, request.FILES)
+        form = TripForm(request.POST)
         if form.is_valid():
             trip = form.save(commit=False)
             trip.user = request.user
@@ -102,10 +107,101 @@ def add_trip(request):
 
     return render(request, 'diary/add_trip.html', {'form': form})
 
+
+@login_required
+def edit_trip(request, pk):
+    trip = get_object_or_404(Trip, pk=pk)
+
+    # Проверяем, что пользователь является автором поездки
+    if trip.user != request.user:
+        messages.error(request, 'Вы можете редактировать только свои поездки.')
+        return redirect('trip_detail', pk=pk)
+
+    if request.method == 'POST':
+        form = TripForm(request.POST, instance=trip)
+        if form.is_valid():
+            form.save()
+
+            # Обработка новых фотографий
+            photos = request.FILES.getlist('photos')
+            for photo in photos:
+                TripPhoto.objects.create(trip=trip, image=photo)
+
+            messages.success(request, 'Поездка успешно обновлена!')
+            return redirect('trip_detail', pk=pk)
+    else:
+        form = TripForm(instance=trip)
+
+    return render(request, 'diary/edit_trip.html', {
+        'form': form,
+        'trip': trip
+    })
+
+
+@login_required
+def delete_trip(request, pk):
+    trip = get_object_or_404(Trip, pk=pk)
+
+    # Проверяем, что пользователь является автором поездки
+    if trip.user != request.user:
+        messages.error(request, 'Вы можете удалять только свои поездки.')
+        return redirect('trip_detail', pk=pk)
+
+    if request.method == 'POST':
+        trip.delete()
+        messages.success(request, 'Поездка успешно удалена!')
+        return redirect('home')
+
+    return render(request, 'diary/delete_trip.html', {'trip': trip})
+
+
+@login_required
+def edit_review(request, pk):
+    review = get_object_or_404(Review, pk=pk)
+
+    # Проверяем, что пользователь является автором отзыва
+    if review.user != request.user:
+        messages.error(request, 'Вы можете редактировать только свои отзывы.')
+        return redirect('trip_detail', pk=review.trip.pk)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Отзыв успешно обновлен!')
+            return redirect('trip_detail', pk=review.trip.pk)
+    else:
+        form = ReviewForm(instance=review)
+
+    return render(request, 'diary/edit_review.html', {
+        'form': form,
+        'review': review
+    })
+
+
+@login_required
+def delete_review(request, pk):
+    review = get_object_or_404(Review, pk=pk)
+    trip_pk = review.trip.pk
+
+    # Проверяем, что пользователь является автором отзыва
+    if review.user != request.user:
+        messages.error(request, 'Вы можете удалять только свои отзывы.')
+        return redirect('trip_detail', pk=trip_pk)
+
+    if request.method == 'POST':
+        review.delete()
+        messages.success(request, 'Отзыв успешно удален!')
+        return redirect('trip_detail', pk=trip_pk)
+
+    return render(request, 'diary/delete_review.html', {'review': review})
+
+
 @login_required
 def my_reviews(request):
     reviews = Review.objects.filter(user=request.user).select_related('trip')
     return render(request, 'diary/my_reviews.html', {'reviews': reviews})
+
 
 def travel_map(request):
     return render(request, 'diary/map.html')

@@ -1,4 +1,3 @@
-
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
@@ -17,4 +16,10 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('my-reviews/', views.my_reviews, name='my_reviews'),
     path('add-trip/', views.add_trip, name='add_trip'),
+
+    # Редактирование и удаление
+    path('trip/<int:pk>/edit/', views.edit_trip, name='edit_trip'),
+    path('trip/<int:pk>/delete/', views.delete_trip, name='delete_trip'),
+    path('review/<int:pk>/edit/', views.edit_review, name='edit_review'),
+    path('review/<int:pk>/delete/', views.delete_review, name='delete_review'),
 ]

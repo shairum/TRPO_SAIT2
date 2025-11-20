@@ -22,6 +22,11 @@
                     <div style="font-size: 0.9rem; color: #666;">Дата регистрации</div>
                     <div style="font-weight: 600; color: #1E4388;">{{ user.date_joined|date:"d.m.Y" }}</div>
                 </div>
+
+                <!-- Кнопка добавления поездки -->
+                <a href="{% url 'add_trip' %}" class="btn" style="width: 100%; text-align: center; display: block;">
+                    ✈️ Добавить поездку
+                </a>
             </div>
         </div>
 
@@ -45,26 +50,47 @@
 
             <!-- Мои поездки -->
             <section style="margin-bottom: 2rem;">
-                <h2 style="color: #1E4388; margin-bottom: 1rem;">Мои поездки</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="color: #1E4388; margin: 0;">Мои поездки</h2>
+                    <a href="{% url 'add_trip' %}" class="btn" style="padding: 8px 16px;">
+                        ✈️ Добавить
+                    </a>
+                </div>
                 {% if user_trips %}
                     <div style="display: grid; gap: 1rem;">
                         {% for trip in user_trips %}
-                        <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #1E4388;">
-                            <h3 style="margin: 0 0 0.5rem 0;">
-                                <a href="{% url 'trip_detail' trip.pk %}" style="color: inherit; text-decoration: none;">
-                                    {{ trip.title }}
-                                </a>
-                            </h3>
-                            <div style="color: #666; font-size: 0.9rem;">
-                                📍 {{ trip.country }} | 📅 {{ trip.start_date|date:"d.m.Y" }} - {{ trip.end_date|date:"d.m.Y" }}
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #1E4388;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 0.5rem 0;">
+                                        <a href="{% url 'trip_detail' trip.pk %}" style="color: inherit; text-decoration: none;">
+                                            {{ trip.title }}
+                                        </a>
+                                    </h3>
+                                    <div style="color: #666; font-size: 0.9rem;">
+                                        📍 {{ trip.country }} | 📅 {{ trip.start_date|date:"d.m.Y" }} - {{ trip.end_date|date:"d.m.Y" }}
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-left: 1rem;">
+                                    <a href="{% url 'edit_trip' trip.pk %}" class="btn" style="padding: 6px 12px; font-size: 0.8rem;">
+                                        ✏️
+                                    </a>
+                                    <a href="{% url 'delete_trip' trip.pk %}" class="btn" style="padding: 6px 12px; font-size: 0.8rem; background: #dc3545;">
+                                        🗑
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
                 {% else %}
-                    <p style="color: #666; text-align: center; padding: 2rem;">
-                        У вас пока нет поездок.
-                    </p>
+                    <div style="text-align: center; padding: 3rem; color: #666; background: #f8f9fa; border-radius: 8px;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🌍</div>
+                        <p style="margin: 0 0 1rem 0;">У вас пока нет поездок.</p>
+                        <a href="{% url 'add_trip' %}" class="btn">
+                            ✈️ Добавить первую поездку
+                        </a>
+                    </div>
                 {% endif %}
             </section>
 
@@ -74,15 +100,30 @@
                 {% if user_reviews %}
                     <div style="display: grid; gap: 1rem;">
                         {% for review in user_reviews %}
-                        <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #FFDD00;">
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #FFDD00;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                                <h4 style="margin: 0; color: #1E4388;">
-                                    <a href="{% url 'trip_detail' review.trip.pk %}" style="color: inherit; text-decoration: none;">
-                                        {{ review.trip.title }}
-                                    </a>
-                                </h4>
-                                <div style="color: #FFDD00; font-size: 1rem;">
-                                    {{ review.get_rating_display }}
+                                <div style="flex: 1;">
+                                    <h4 style="margin: 0 0 0.5rem 0; color: #1E4388;">
+                                        <a href="{% url 'trip_detail' review.trip.pk %}" style="color: inherit; text-decoration: none;">
+                                            {{ review.trip.title }}
+                                        </a>
+                                    </h4>
+                                    <div style="color: #666; font-size: 0.9rem;">
+                                        📍 {{ review.trip.country }}
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="color: #FFDD00; font-size: 1rem;">
+                                        {{ review.get_rating_display }}
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="{% url 'edit_review' review.pk %}" class="btn" style="padding: 4px 8px; font-size: 0.7rem;">
+                                            ✏️
+                                        </a>
+                                        <a href="{% url 'delete_review' review.pk %}" class="btn" style="padding: 4px 8px; font-size: 0.7rem; background: #dc3545;">
+                                            🗑
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <p style="color: #666; margin: 0; font-size: 0.9rem;">{{ review.comment|truncatewords:20 }}</p>
@@ -93,9 +134,10 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <p style="color: #666; text-align: center; padding: 2rem;">
-                        Вы еще не оставляли отзывов.
-                    </p>
+                    <div style="text-align: center; padding: 3rem; color: #666; background: #f8f9fa; border-radius: 8px;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+                        <p style="margin: 0;">Вы еще не оставляли отзывов.</p>
+                    </div>
                 {% endif %}
             </section>
         </div>
