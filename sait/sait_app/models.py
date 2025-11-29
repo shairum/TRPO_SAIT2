@@ -5,9 +5,20 @@ from django.utils import timezone
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        User, 
-        on_delete=models.CASCADE, 
+        User,
+        on_delete=models.CASCADE,
         related_name='profile'
+    )
+    avatar = models.ImageField(
+        upload_to='avatars/%Y/%m/%d/',
+        verbose_name="Аватар",
+        blank=True,
+        null=True
+    )
+    bio = models.TextField(
+        verbose_name="О себе",
+        max_length=500,
+        blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -21,6 +32,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"Профиль {self.user.username}"
+
+    def get_avatar_url(self):
+        """Возвращает URL аватара или стандартный аватар"""
+        if self.avatar:
+            return self.avatar.url
+        return '/static/default_avatar.png'
 
 class Trip(models.Model):
     user = models.ForeignKey(

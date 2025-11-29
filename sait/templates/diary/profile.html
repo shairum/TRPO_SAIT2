@@ -6,15 +6,27 @@
         <!-- Боковая панель профиля -->
         <div style="flex: 1; background: #f8f9fa; padding: 2rem; border-radius: 12px;">
             <div style="text-align: center;">
-                <div style="width: 120px; height: 120px; border-radius: 50%; background: #1E4388; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">
-                    {{ user.username|first|upper }}
-                </div>
+                {% if user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}"
+                         alt="Аватар"
+                         style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #1E4388;">
+                {% else %}
+                    <div style="width: 120px; height: 120px; border-radius: 50%; background: #1E4388; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">
+                        {{ user.username|first|upper }}
+                    </div>
+                {% endif %}
                 <h2 style="color: #1E4388; margin-top: 1rem;">{{ user.username }}</h2>
                 <div style="color: #1E4388; font-weight: 600; margin: 0.5rem 0;">
                    🎯 Активный пользователь
                 </div>
                 <p style="color: #666; margin: 0.5rem 0;">{{ user.first_name }} {{ user.last_name }}</p>
                 <p style="color: #666; margin: 0.5rem 0;">{{ user.email }}</p>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <a href="{% url 'edit_profile' %}" class="btn" style="width: 100%; text-align: center; display: block;">
+                    ✏️ Редактировать профиль
+                </a>
             </div>
 
             <div style="margin-top: 2rem;">

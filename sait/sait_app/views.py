@@ -3,9 +3,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
-from django.http import Http404
 from .models import Trip, Review, UserProfile, TripPhoto
-from .forms import ReviewForm, CustomUserCreationForm, TripForm
+from .forms import ReviewForm, CustomUserCreationForm, TripForm, UserProfileForm, UserUpdateForm
 
 
 def home(request):
@@ -205,3 +204,40 @@ def my_reviews(request):
 
 def travel_map(request):
     return render(request, 'diary/map.html')
+
+
+@login_required
+def edit_profile(request):
+    """Редактирование профиля пользователя"""
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Ваш профиль успешно обновлен!')
+            return redirect('profile')
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = UserProfileForm(instance=request.user.profile)
+
+    return render(request, 'diary/edit_profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+
+
+@login_required
+def delete_avatar(request):
+    """Удаление аватара"""
+    if request.method == 'POST':
+        profile = request.user.profile
+        if profile.avatar:
+            profile.avatar.delete(save=False)
+            profile.avatar = None
+            profile.save()
+            messages.success(request, 'Фото профиля удалено!')
+        return redirect('edit_profile')
+
+    return render(request, 'diary/delete_avatar.html')

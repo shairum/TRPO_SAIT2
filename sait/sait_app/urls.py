@@ -14,6 +14,8 @@ urlpatterns = [
 
     # Личный кабинет
     path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('profile/delete-avatar/', views.delete_avatar, name='delete_avatar'),
     path('my-reviews/', views.my_reviews, name='my_reviews'),
     path('add-trip/', views.add_trip, name='add_trip'),
 

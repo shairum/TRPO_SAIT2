@@ -122,6 +122,14 @@
             font-size: 0.9rem;
         }
 
+        .avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FFDD00;
+        }
+
         .container {
             max-width: 1400px;
             margin: 40px auto;
@@ -464,6 +472,14 @@
             font-weight: bold;
         }
 
+        .review-avatar-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #1E4388;
+        }
+
         .review-rating {
             color: #FFDD00;
             font-size: 1.2rem;
@@ -555,20 +571,24 @@
             <li><a href="{% url 'add_trip' %}">✈️ Добавить поездку</a></li>
             <li>
                 <a href="{% url 'profile' %}">
-                    <div class="user-avatar">
-                        {{ user.username|first|upper }}
-                    </div>
+                    {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="Аватар" class="avatar-img">
+                    {% else %}
+                        <div class="user-avatar">
+                            {{ user.username|first|upper }}
+                        </div>
+                    {% endif %}
                     👤 {{ user.username }}
                 </a>
             </li>
             <li>
-    <form method="post" action="{% url 'logout' %}" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; font-weight: 500; display: flex; align-items: center; gap: 8px; font-family: inherit; font-size: inherit;">
-            🚪 Выйти
-        </button>
-    </form>
-</li>
+                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; font-weight: 500; display: flex; align-items: center; gap: 8px; font-family: inherit; font-size: inherit;">
+                        🚪 Выйти
+                    </button>
+                </form>
+            </li>
         </div>
     {% else %}
         <div class="user-menu">

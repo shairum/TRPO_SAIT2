@@ -102,9 +102,13 @@
                 <div style="background: white; padding: 1.5rem; border-radius: 10px; border: 1px solid #e0e7ff;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
                         <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; background: #1E4388; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                {{ review.user.username|first|upper }}
-                            </div>
+                            {% if review.user.profile.avatar %}
+                                <img src="{{ review.user.profile.avatar.url }}" alt="Аватар" class="review-avatar-img">
+                            {% else %}
+                                <div class="review-avatar">
+                                    {{ review.user.username|first|upper }}
+                                </div>
+                            {% endif %}
                             <div>
                                 <strong style="color: #1E4388;">{{ review.user.username }}</strong>
                                 <div style="color: #666; font-size: 0.9rem;">

@@ -35,11 +35,38 @@ class CustomUserCreationForm(UserCreationForm):
 
         if commit:
             user.save()
-            # Создаем профиль пользователя только если его нет
             if not hasattr(user, 'profile'):
                 UserProfile.objects.create(user=user)
 
         return user
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['avatar', 'bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={
+                'rows': 4,
+                'placeholder': 'Расскажите о себе...',
+                'style': 'resize: vertical; min-height: 100px;'
+            }),
+        }
+        labels = {
+            'avatar': 'Фото профиля',
+            'bio': 'О себе',
+        }
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True, label='Электронная почта')
+    first_name = forms.CharField(required=True, label='Имя')
+    last_name = forms.CharField(required=True, label='Фамилия')
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        labels = {
+            'username': 'Имя пользователя',
+        }
 
 class ReviewForm(forms.ModelForm):
     class Meta:
