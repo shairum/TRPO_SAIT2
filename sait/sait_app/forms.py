@@ -1,4 +1,3 @@
-
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -16,6 +15,18 @@ class CustomUserCreationForm(UserCreationForm):
             'username': 'Имя пользователя',
         }
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('Пользователь с таким именем уже существует.')
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Пользователь с таким email уже существует.')
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
@@ -24,7 +35,9 @@ class CustomUserCreationForm(UserCreationForm):
 
         if commit:
             user.save()
-            UserProfile.objects.create(user=user)
+            # Создаем профиль пользователя только если его нет
+            if not hasattr(user, 'profile'):
+                UserProfile.objects.create(user=user)
 
         return user
 
