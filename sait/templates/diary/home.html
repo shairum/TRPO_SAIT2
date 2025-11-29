@@ -2,7 +2,55 @@
 
 {% block content %}
 <div class="card">
-    <h1 class="page-title">Мои путешествия</h1>
+    <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <h1 class="page-title" style="margin: 0;">Мои путешествия</h1>
+
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <!-- Поиск -->
+            <form method="get" style="display: flex; gap: 0.5rem;">
+                <input type="text" name="search" value="{{ search_query }}"
+                       placeholder="Поиск поездок..."
+                       class="form-control"
+                       style="width: 250px; padding: 10px;">
+                <button type="submit" class="btn" style="padding: 10px 16px;">
+                    🔍
+                </button>
+            </form>
+
+            <!-- Сортировка -->
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span style="color: #666; font-weight: 600;">Сортировка:</span>
+                <select onchange="location = this.value;" style="padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; background: white;">
+                    <option value="?sort=-start_date{% if search_query %}&search={{ search_query }}{% endif %}"
+                            {% if sort_by == '-start_date' %}selected{% endif %}>
+                        🆕 Сначала новые
+                    </option>
+                    <option value="?sort=start_date{% if search_query %}&search={{ search_query }}{% endif %}"
+                            {% if sort_by == 'start_date' %}selected{% endif %}>
+                        📅 Сначала старые
+                    </option>
+                    <option value="?sort=rating{% if search_query %}&search={{ search_query }}{% endif %}"
+                            {% if sort_by == 'rating' %}selected{% endif %}>
+                        ⭐ По рейтингу
+                    </option>
+                    <option value="?sort=reviews{% if search_query %}&search={{ search_query }}{% endif %}"
+                            {% if sort_by == 'reviews' %}selected{% endif %}>
+                        💬 По количеству отзывов
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Быстрые ссылки на рейтинги -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <a href="{% url 'top_rated' %}" class="btn btn-secondary" style="padding: 10px 20px;">
+            🏆 Лучшие по рейтингу
+        </a>
+        <a href="{% url 'most_reviewed' %}" class="btn btn-secondary" style="padding: 10px 20px;">
+            💬 Самые обсуждаемые
+        </a>
+    </div>
 
     {% if trips %}
         <div class="trip-grid">
@@ -23,6 +71,35 @@
                         </div>
                     </div>
 
+                    <!-- Рейтинг -->
+                    <div style="margin-bottom: 1rem;">
+                        {% if trip.average_rating > 0 or trip.avg_rating %}
+                        <div class="rating-badge {{ trip.get_rating_class }}">
+                            <span style="display: flex; align-items: center; gap: 0.25rem;">
+                                ⭐
+                                {% if trip.avg_rating %}
+                                    {{ trip.avg_rating|floatformat:1 }}
+                                {% else %}
+                                    {{ trip.average_rating|floatformat:1 }}
+                                {% endif %}
+                                <span style="font-size: 0.8rem; opacity: 0.8;">
+                                    (
+                                    {% if trip.reviews_count_annotated %}
+                                        {{ trip.reviews_count_annotated }}
+                                    {% else %}
+                                        {{ trip.reviews_count }}
+                                    {% endif %}
+                                    отзыв{{ trip.reviews_count|pluralize:"ов" }})
+                                </span>
+                            </span>
+                        </div>
+                        {% else %}
+                        <div style="background: #f8f9fa; color: #666; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; display: inline-block;">
+                            ⭐ Нет оценок
+                        </div>
+                        {% endif %}
+                    </div>
+
                     <p>{{ trip.description|truncatewords:25 }}</p>
 
                     <a href="{{ trip.get_absolute_url }}" class="btn">
@@ -31,10 +108,49 @@
                 </div>
             {% endfor %}
         </div>
+
+        <!-- Пагинация -->
+        {% if trips.has_other_pages %}
+        <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem; flex-wrap: wrap;">
+            {% if trips.has_previous %}
+                <a href="?page={{ trips.previous_page_number }}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                   class="pagination-btn">
+                    ←
+                </a>
+            {% endif %}
+
+            {% for num in trips.paginator.page_range %}
+                {% if trips.number == num %}
+                    <span class="pagination-btn pagination-active">{{ num }}</span>
+                {% elif num > trips.number|add:'-3' and num < trips.number|add:'3' %}
+                    <a href="?page={{ num }}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                       class="pagination-btn">
+                        {{ num }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+            {% if trips.has_next %}
+                <a href="?page={{ trips.next_page_number }}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                   class="pagination-btn">
+                    →
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
     {% else %}
         <div class="empty-state">
             <div class="empty-state-icon">🌍</div>
             <h2>Пока нет записей о поездках</h2>
+            {% if search_query %}
+                <p style="color: #666; margin-top: 1rem;">
+                    По запросу "{{ search_query }}" ничего не найдено.
+                </p>
+                <a href="{% url 'home' %}" class="btn" style="margin-top: 1rem;">
+                    Показать все поездки
+                </a>
+            {% endif %}
         </div>
     {% endif %}
 </div>

@@ -6,6 +6,10 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('trip/<int:pk>/', views.trip_detail, name='trip_detail'),
     path('map/', views.travel_map, name='travel_map'),
+    
+    # Рейтинги и топы
+    path('top-rated/', views.top_rated_trips, name='top_rated'),
+    path('most-reviewed/', views.most_reviewed_trips, name='most_reviewed'),
 
     # Авторизация
     path('login/', auth_views.LoginView.as_view(template_name='diary/login.html'), name='login'),
