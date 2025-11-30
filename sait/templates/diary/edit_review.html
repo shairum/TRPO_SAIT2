@@ -4,9 +4,9 @@
 <div class="card" style="max-width: 600px; margin: 0 auto;">
     <h1 class="page-title">✏️ Редактировать отзыв</h1>
     
-    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+    <div style="background: var(--bg-primary); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
         <h3 style="color: #1E4388; margin-bottom: 0.5rem;">Поездка: {{ review.trip.title }}</h3>
-        <p style="color: #666; margin: 0;">📍 {{ review.trip.country }}</p>
+        <p style="color: var(--text-secondary); margin: 0;">📍 {{ review.trip.country }}</p>
     </div>
     
     <form method="post">
@@ -57,7 +57,7 @@
     .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #e0e7ff;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
         font-size: 1rem;
         transition: all 0.3s ease;
@@ -65,7 +65,7 @@
     
     .form-control:focus {
         outline: none;
-        border-color: #1E4388;
+        border-color: var(--accent-primary);
         box-shadow: 0 0 0 3px rgba(30, 67, 136, 0.1);
     }
     

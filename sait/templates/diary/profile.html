@@ -4,23 +4,23 @@
 <div class="card">
     <div style="display: flex; gap: 2rem; align-items: flex-start;">
         <!-- Боковая панель профиля -->
-        <div style="flex: 1; background: #f8f9fa; padding: 2rem; border-radius: 12px;">
+        <div style="flex: 1; background: var(--bg-primary); padding: 2rem; border-radius: 12px;">
             <div style="text-align: center;">
                 {% if user.profile.avatar %}
                     <img src="{{ user.profile.avatar.url }}"
                          alt="Аватар"
-                         style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #1E4388;">
+                         style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-primary);">
                 {% else %}
-                    <div style="width: 120px; height: 120px; border-radius: 50%; background: #1E4388; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--accent-primary); color: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">
                         {{ user.username|first|upper }}
                     </div>
                 {% endif %}
-                <h2 style="color: #1E4388; margin-top: 1rem;">{{ user.username }}</h2>
-                <div style="color: #1E4388; font-weight: 600; margin: 0.5rem 0;">
+                <h2 style="color: var(--accent-primary); margin-top: 1rem;">{{ user.username }}</h2>
+                <div style="color: var(--accent-primary); font-weight: 600; margin: 0.5rem 0;">
                    🎯 Активный пользователь
                 </div>
-                <p style="color: #666; margin: 0.5rem 0;">{{ user.first_name }} {{ user.last_name }}</p>
-                <p style="color: #666; margin: 0.5rem 0;">{{ user.email }}</p>
+                <p style="color: var(--text-secondary); margin: 0.5rem 0;">{{ user.first_name }} {{ user.last_name }}</p>
+                <p style="color: var(--text-secondary); margin: 0.5rem 0;">{{ user.email }}</p>
             </div>
 
             <div style="margin-top: 2rem;">
@@ -30,9 +30,9 @@
             </div>
 
             <div style="margin-top: 2rem;">
-                <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <div style="font-size: 0.9rem; color: #666;">Дата регистрации</div>
-                    <div style="font-weight: 600; color: #1E4388;">{{ user.date_joined|date:"d.m.Y" }}</div>
+                <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">Дата регистрации</div>
+                    <div style="font-weight: 600; color: var(--accent-primary);">{{ user.date_joined|date:"d.m.Y" }}</div>
                 </div>
 
                 <!-- Кнопка добавления поездки -->
@@ -44,16 +44,16 @@
 
         <!-- Основной контент -->
         <div style="flex: 2;">
-            <h1 style="color: #1E4388; margin-bottom: 2rem;">Личный кабинет</h1>
+            <h1 style="color: var(--accent-primary); margin-bottom: 2rem;">Личный кабинет</h1>
 
             <!-- Статистика -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                <div style="background: linear-gradient(135deg, #1E4388, #152F5D); color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
+                <div style="background: linear-gradient(135deg, var(--accent-primary), #152F5D); color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
                     <div style="font-size: 2rem;">📊</div>
                     <h3>{{ user_trips.count }}</h3>
                     <p>Мои поездки</p>
                 </div>
-                <div style="background: linear-gradient(135deg, #FFDD00, #FFC800); color: #1E4388; padding: 1.5rem; border-radius: 10px; text-align: center;">
+                <div style="background: linear-gradient(135deg, var(--accent-secondary), #FFC800); color: var(--accent-primary); padding: 1.5rem; border-radius: 10px; text-align: center;">
                     <div style="font-size: 2rem;">⭐</div>
                     <h3>{{ user_reviews.count }}</h3>
                     <p>Мои отзывы</p>
@@ -63,7 +63,7 @@
             <!-- Мои поездки -->
             <section style="margin-bottom: 2rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h2 style="color: #1E4388; margin: 0;">Мои поездки</h2>
+                    <h2 style="color: var(--accent-primary); margin: 0;">Мои поездки</h2>
                     <a href="{% url 'add_trip' %}" class="btn" style="padding: 8px 16px;">
                         ✈️ Добавить
                     </a>
@@ -71,7 +71,7 @@
                 {% if user_trips %}
                     <div style="display: grid; gap: 1rem;">
                         {% for trip in user_trips %}
-                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #1E4388;">
+                        <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent-primary);">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                 <div style="flex: 1;">
                                     <h3 style="margin: 0 0 0.5rem 0;">
@@ -79,7 +79,7 @@
                                             {{ trip.title }}
                                         </a>
                                     </h3>
-                                    <div style="color: #666; font-size: 0.9rem;">
+                                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
                                         📍 {{ trip.country }} | 📅 {{ trip.start_date|date:"d.m.Y" }} - {{ trip.end_date|date:"d.m.Y" }}
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <div style="text-align: center; padding: 3rem; color: #666; background: #f8f9fa; border-radius: 8px;">
+                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary); background: var(--bg-primary); border-radius: 8px;">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">🌍</div>
                         <p style="margin: 0 0 1rem 0;">У вас пока нет поездок.</p>
                         <a href="{% url 'add_trip' %}" class="btn">
@@ -108,24 +108,24 @@
 
             <!-- Мои отзывы -->
             <section>
-                <h2 style="color: #1E4388; margin-bottom: 1rem;">Мои отзывы</h2>
+                <h2 style="color: var(--accent-primary); margin-bottom: 1rem;">Мои отзывы</h2>
                 {% if user_reviews %}
                     <div style="display: grid; gap: 1rem;">
                         {% for review in user_reviews %}
-                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #FFDD00;">
+                        <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent-secondary);">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                                 <div style="flex: 1;">
-                                    <h4 style="margin: 0 0 0.5rem 0; color: #1E4388;">
+                                    <h4 style="margin: 0 0 0.5rem 0; color: var(--accent-primary);">
                                         <a href="{% url 'trip_detail' review.trip.pk %}" style="color: inherit; text-decoration: none;">
                                             {{ review.trip.title }}
                                         </a>
                                     </h4>
-                                    <div style="color: #666; font-size: 0.9rem;">
+                                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
                                         📍 {{ review.trip.country }}
                                     </div>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="color: #FFDD00; font-size: 1rem;">
+                                    <div style="color: var(--accent-secondary); font-size: 1rem;">
                                         {{ review.get_rating_display }}
                                     </div>
                                     <div style="display: flex; gap: 0.5rem;">
@@ -138,7 +138,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p style="color: #666; margin: 0; font-size: 0.9rem;">{{ review.comment|truncatewords:20 }}</p>
+                            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">{{ review.comment|truncatewords:20 }}</p>
                             <div style="color: #999; font-size: 0.8rem; margin-top: 0.5rem;">
                                 {{ review.created_at|date:"d.m.Y H:i" }}
                             </div>
@@ -146,7 +146,7 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <div style="text-align: center; padding: 3rem; color: #666; background: #f8f9fa; border-radius: 8px;">
+                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary); background: var(--bg-primary); border-radius: 8px;">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
                         <p style="margin: 0;">Вы еще не оставляли отзывов.</p>
                     </div>

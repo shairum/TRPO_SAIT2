@@ -62,7 +62,7 @@
         <div class="form-group">
             <label class="form-label">Фотографии</label>
             <input type="file" name="photos" multiple accept="image/*" class="form-control">
-            <div style="font-size: 0.8rem; color: #666; margin-top: 0.25rem;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
                 Можно выбрать несколько файлов (JPEG, PNG, GIF)
             </div>
         </div>
@@ -82,7 +82,7 @@
     .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #e0e7ff;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
         font-size: 1rem;
         transition: all 0.3s ease;
@@ -90,7 +90,7 @@
 
     .form-control:focus {
         outline: none;
-        border-color: #1E4388;
+        border-color: var(--accent-primary);
         box-shadow: 0 0 0 3px rgba(30, 67, 136, 0.1);
     }
 

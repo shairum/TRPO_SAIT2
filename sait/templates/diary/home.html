@@ -19,8 +19,8 @@
 
             <!-- Сортировка -->
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <span style="color: #666; font-weight: 600;">Сортировка:</span>
-                <select onchange="location = this.value;" style="padding: 10px; border: 2px solid #e0e7ff; border-radius: 8px; background: white;">
+                <span style="color: var(--text-secondary); font-weight: 600;">Сортировка:</span>
+                <select onchange="location = this.value;" style="padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary);">
                     <option value="?sort=-start_date{% if search_query %}&search={{ search_query }}{% endif %}"
                             {% if sort_by == '-start_date' %}selected{% endif %}>
                         🆕 Сначала новые
@@ -94,7 +94,7 @@
                             </span>
                         </div>
                         {% else %}
-                        <div style="background: #f8f9fa; color: #666; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; display: inline-block;">
+                        <div style="background: var(--bg-primary); color: var(--text-secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; display: inline-block;">
                             ⭐ Нет оценок
                         </div>
                         {% endif %}
@@ -144,7 +144,7 @@
             <div class="empty-state-icon">🌍</div>
             <h2>Пока нет записей о поездках</h2>
             {% if search_query %}
-                <p style="color: #666; margin-top: 1rem;">
+                <p style="color: var(--text-secondary); margin-top: 1rem;">
                     По запросу "{{ search_query }}" ничего не найдено.
                 </p>
                 <a href="{% url 'home' %}" class="btn" style="margin-top: 1rem;">
