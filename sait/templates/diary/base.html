@@ -627,9 +627,58 @@
         </div>
     {% else %}
         <div class="user-menu">
-            <li><a href="{% url 'login' %}">🔑 Войти</a></li>
+            <li>
+                <a href="#" onclick="showLoginOptions()" style="display: flex; align-items: center; gap: 8px;">
+                    🔑 Войти
+                </a>
+            </li>
             <li><a href="{% url 'register' %}" class="btn-outline">📝 Регистрация</a></li>
         </div>
+
+        <!-- Модальное окно выбора способа входа -->
+        <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+            <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 400px; width: 90%;">
+                <h2 style="color: #1E4388; margin-bottom: 1.5rem; text-align: center;">Выберите способ входа</h2>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <a href="{% url 'login' %}" class="btn" style="text-align: center;">
+                        👤 Логин и пароль
+                    </a>
+
+                    <a href="{% url 'social:begin' 'yandex-oauth2' %}"
+                       class="btn"
+                       style="background: #FFCC00; color: #000; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIyQzE3LjUyMjggMjIgMjIgMTcuNTIyOCAyMiAxMkMyMiA2LjQ3NzE1IDE3LjUyMjggMiAxMiAyQzYuNDc3MTUgMiAyIDYuNDc3MTUgMiAxMkMyIDE3LjUyMjggNi40NzcxNSAyMiAxMiAyMloiIGZpbGw9IiNmZmNjMDAiLz4KPHBhdGggZD0iTTEyLjU1MjUgMTUuNDk1N0g5LjY0N1Y4LjUwNDM0SDEyLjU3ODVDMTMuODQ3MyA4LjUwNDM0IDE0LjcyNTIgOC44ODQ1NiAxNS4yMTIyIDkuNjQ1MDJDMTUuNjk5MiAxMC40MDU0OCAxNS45NDI3IDExLjQ3MTcgMTUuOTQyNyAxMi43NDM4QzE1Ljk0MjcgMTMuOTc4MyAxNS43MTM2IDE1LjAwODggMTUuMjU1NCAxNS44MzUzQzE0Ljc5NzIgMTYuNjYxOCAxMy45NDQ3IDE3LjA3NSAxMi43OTc5IDE3LjA3NUMxMi4wNDY5IDE3LjA3NSAxMS40Mjg3IDE2LjkxNDUgMTAuOTQzNCAxNi41OTM1QzEwLjQ1ODEgMTYuMjcyNSAxMC4wOTU3IDE1Ljg0NzcgOS44NTYyIDE1LjMxOTJMMTAuOTU5NyAxNC40NDc2QzExLjE0MjEgMTQuODMzOCAxMS40Mzc1IDE1LjEyNDUgMTEuODQ1NyAxNS4zMTk4QzEyLjI1MzkgMTUuNTE1MSAxMi43MTA5IDE1LjYxMjggMTMuMjE2OCAxNS42MTI4QzEzLjk1MzEgMTUuNjEyOCAxNC41MDQ5IDE1LjM3NzcgMTQuODY3MiAxNC45MDc1QzE1LjIyOTUgMTQuNDM3MyAxNS40MTA2IDEzLjc2NjEgMTUuNDEwNiAxMi44OTM4QzE1LjQxMDYgMTIuMDQxNyAxNS4yNDUxIDExLjQxMzUgMTQuOTE0MSAxMS4wMDk0QzE0LjU4MzEgMTAuNjA1MyAxNC4wNzE5IDEwLjQwMzMgMTMuMzgwNCAxMC40MDMzSDEwLjc0NzRWMTEuOTYwMkgxMi41NTI1VjEyLjk5ODdIMTAuNzQ3NFYxNC40NDc2SDEyLjU1MjVWMTUuNDk1N1oiIGZpbGw9IiMwMDAwMDAiLz4KPC9zdmc+"
+                         alt="Yandex"
+                         style="width: 20px; height: 20px;">
+                        Яндекс ID
+                    </a>
+                </div>
+
+                <button onclick="hideLoginOptions()"
+                        class="btn btn-secondary"
+                        style="width: 100%; margin-top: 1rem;">
+                    Отмена
+                </button>
+            </div>
+        </div>
+
+        <script>
+            function showLoginOptions() {
+                document.getElementById('loginModal').style.display = 'flex';
+            }
+
+            function hideLoginOptions() {
+                document.getElementById('loginModal').style.display = 'none';
+            }
+
+            // Закрытие модального окна при клике вне его
+            document.getElementById('loginModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideLoginOptions();
+                }
+            });
+        </script>
     {% endif %}
 </ul>
         </nav>

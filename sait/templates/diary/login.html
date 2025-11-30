@@ -27,6 +27,16 @@
             🔑 Войти
         </button>
 
+        <!-- Кнопка входа через Yandex -->
+        <a href="{% url 'social:begin' 'yandex-oauth2' %}"
+           class="btn"
+           style="width: 100%; margin-bottom: 1rem; background: #FFCC00; color: #000; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIyQzE3LjUyMjggMjIgMjIgMTcuNTIyOCAyMiAxMkMyMiA2LjQ3NzE1IDE3LjUyMjggMiAxMiAyQzYuNDc3MTUgMiAyIDYuNDc3MTUgMiAxMkMyIDE3LjUyMjggNi40NzcxNSAyMiAxMiAyMloiIGZpbGw9IiNmZmNjMDAiLz4KPHBhdGggZD0iTTEyLjU1MjUgMTUuNDk1N0g5LjY0N1Y4LjUwNDM0SDEyLjU3ODVDMTMuODQ3MyA4LjUwNDM0IDE0LjcyNTIgOC44ODQ1NiAxNS4yMTIyIDkuNjQ1MDJDMTUuNjk5MiAxMC40MDU0OCAxNS45NDI3IDExLjQ3MTcgMTUuOTQyNyAxMi43NDM4QzE1Ljk0MjcgMTMuOTc4MyAxNS43MTM2IDE1LjAwODggMTUuMjU1NCAxNS44MzUzQzE0Ljc5NzIgMTYuNjYxOCAxMy45NDQ3IDE3LjA3NSAxMi43OTc5IDE3LjA3NUMxMi4wNDY5IDE3LjA3NSAxMS40Mjg3IDE2LjkxNDUgMTAuOTQzNCAxNi41OTM1QzEwLjQ1ODEgMTYuMjcyNSAxMC4wOTU3IDE1Ljg0NzcgOS44NTYyIDE1LjMxOTJMMTAuOTU5NyAxNC40NDc2QzExLjE0MjEgMTQuODMzOCAxMS40Mzc1IDE1LjEyNDUgMTEuODQ1NyAxNS4zMTk4QzEyLjI1MzkgMTUuNTE1MSAxMi43MTA5IDE1LjYxMjggMTMuMjE2OCAxNS42MTI4QzEzLjk1MzEgMTUuNjEyOCAxNC41MDQ5IDE1LjM3NzcgMTQuODY3MiAxNC45MDc1QzE1LjIyOTUgMTQuNDM3MyAxNS40MTA2IDEzLjc2NjEgMTUuNDEwNiAxMi44OTM4QzE1LjQxMDYgMTIuMDQxNyAxNS4yNDUxIDExLjQxMzUgMTQuOTE0MSAxMS4wMDk0QzE0LjU4MzEgMTAuNjA1MyAxNC4wNzE5IDEwLjQwMzMgMTMuMzgwNCAxMC40MDMzSDEwLjc0NzRWMTEuOTYwMkgxMi41NTI1VjEyLjk5ODdIMTAuNzQ3NFYxNC40NDc2SDEyLjU1MjVWMTUuNDk1N1oiIGZpbGw9IiMwMDAwMDAiLz4KPC9zdmc+"
+                 alt="Yandex"
+                 style="width: 20px; height: 20px;">
+            Войти через Яндекс
+        </a>
+
         <div style="text-align: center;">
             <p style="color: #666;">Нет аккаунта?
                 <a href="{% url 'register' %}" style="color: #1E4388; font-weight: 600;">Зарегистрироваться</a>

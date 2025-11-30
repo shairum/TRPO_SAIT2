@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
 from django.db.models import Count, Q
+from django.http import HttpResponse  # Добавляем этот импорт
 from .models import Trip, Review, UserProfile, TripPhoto
 from .forms import ReviewForm, CustomUserCreationForm, TripForm, UserProfileForm, UserUpdateForm
 
