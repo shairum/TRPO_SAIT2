@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
+from django.db.models import Avg, Count  # Добавляем импорт
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
@@ -41,15 +42,15 @@ class UserProfile(models.Model):
 
 class Trip(models.Model):
     user = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        related_name='trips', 
+        User,
+        on_delete=models.CASCADE,
+        related_name='trips',
         verbose_name="Автор",
         db_index=True
     )
     title = models.CharField(max_length=200, verbose_name="Название поездки")
     country = models.CharField(
-        max_length=100, 
+        max_length=100,
         verbose_name="Страна",
         db_index=True
     )
@@ -79,16 +80,45 @@ class Trip(models.Model):
     def get_absolute_url(self):
         return reverse('trip_detail', kwargs={'pk': self.pk})
 
+    @property
     def average_rating(self):
-        """Средний рейтинг поездки"""
-        reviews = self.reviews.filter(is_approved=True)
-        if reviews.exists():
-            return round(sum(review.rating for review in reviews) / reviews.count(), 1)
-        return 0
+        """Средний рейтинг поездки с кэшированием"""
+        result = self.reviews.filter(is_approved=True).aggregate(
+            avg_rating=Avg('rating')
+        )
+        return result['avg_rating'] or 0
 
+    @property
     def reviews_count(self):
-        """Количество отзывов"""
+        """Количество отзывов с кэшированием"""
         return self.reviews.filter(is_approved=True).count()
+
+    @property
+    def rating_stars(self):
+        """Звезды рейтинга для отображения"""
+        avg_rating = self.average_rating
+        if avg_rating:
+            full_stars = int(avg_rating)
+            half_star = avg_rating - full_stars >= 0.5
+            stars = '⭐' * full_stars
+            if half_star:
+                stars += '½'
+            return stars
+        return ''
+
+    def get_rating_class(self):
+        """CSS класс для цвета рейтинга"""
+        avg_rating = self.average_rating
+        if avg_rating >= 4.5:
+            return 'rating-excellent'
+        elif avg_rating >= 4.0:
+            return 'rating-very-good'
+        elif avg_rating >= 3.0:
+            return 'rating-good'
+        elif avg_rating >= 2.0:
+            return 'rating-average'
+        else:
+            return 'rating-poor'
 
     def duration_days(self):
         """Продолжительность поездки в днях"""

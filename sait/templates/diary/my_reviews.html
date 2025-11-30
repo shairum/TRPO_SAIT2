@@ -14,8 +14,8 @@
                             {{ review.user.username|first|upper }}
                         </div>
                         <div>
-                            <strong style="color: #1E4388;">{{ review.trip.title }}</strong>
-                            <div style="color: #666; font-size: 0.9rem;">
+                            <strong style="color: var(--accent-primary);">{{ review.trip.title }}</strong>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">
                                 📍 {{ review.trip.country }}
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                         {{ review.get_rating_stars }}
                     </div>
                 </div>
-                <p style="color: #444; line-height: 1.6; margin: 0;">{{ review.comment }}</p>
+                <p style="color: var(--text-primary); line-height: 1.6; margin: 0;">{{ review.comment }}</p>
                 <div style="color: #999; font-size: 0.8rem; margin-top: 1rem;">
                     {{ review.created_at|date:"d.m.Y H:i" }}
                 </div>
@@ -34,8 +34,8 @@
     {% else %}
         <div class="empty-state">
             <div class="empty-state-icon">⭐</div>
-            <h2 style="color: #1E4388; margin-bottom: 1rem;">У вас пока нет отзывов</h2>
-            <p style="color: #666; font-size: 1.1rem;">Оставляйте отзывы к поездкам, чтобы они здесь появились!</p>
+            <h2 style="color: var(--accent-primary); margin-bottom: 1rem;">У вас пока нет отзывов</h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Оставляйте отзывы к поездкам, чтобы они здесь появились!</p>
             <a href="{% url 'home' %}" class="btn">Перейти к поездкам</a>
         </div>
     {% endif %}
