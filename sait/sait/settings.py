@@ -44,11 +44,22 @@ INSTALLED_APPS = [
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.yandex.YandexOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'sait_app.telegram_backend.TelegramBackend',
 )
 
 SOCIAL_AUTH_YANDEX_OAUTH2_KEY = 'ecc4c74bf79c4ac7a5ae154574b05b62'
 SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = 'e5246bd9246342d4ba6f354333d9432c'
 SOCIAL_AUTH_YANDEX_OAUTH2_SCOPE = ['login:email', 'login:info']
+
+TELEGRAM_BOT_TOKEN = '8544093753:AAGqer6InHZzAVK9PE93tYt00dGcdCGeS1s'
+TELEGRAM_BOT_NAME = 'traveler52_bot'  # Без @
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -164,7 +175,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
-    'sait_app.pipeline.create_user_profile',  # наш кастомный пайплайн
+    'sait_app.pipeline.create_user_profile',  # только создание профиля
 )
 
 SOCIAL_AUTH_YANDEX_OAUTH2_AUTH_EXTRA_ARGUMENTS = {

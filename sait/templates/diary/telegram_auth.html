@@ -1,0 +1,71 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="card" style="max-width: 400px; margin: 0 auto; text-align: center;">
+    <h1 class="page-title">Вход через Telegram</h1>
+    
+    <div style="margin-bottom: 2rem;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">📱</div>
+        <p style="color: #666; margin-bottom: 2rem;">
+            Для входа через Telegram:
+        </p>
+        <ol style="text-align: left; color: #666; margin-bottom: 2rem;">
+            <li>Откройте Telegram</li>
+            <li>Найдите бота: <strong><a href="https://t.me/{{ bot_username }}" target="_blank">@{{ bot_username }}</a></strong></li>
+            <li>Отправьте команду <code>/start</code></li>
+            <li>Получите код для входа</li>
+        </ol>
+    </div>
+
+    <!-- Форма для ввода кода -->
+    <form id="telegramCodeForm" style="margin-bottom: 2rem;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label">Введите код из Telegram</label>
+            <input type="text" name="telegram_code" class="form-control"
+                   placeholder="123456" required maxlength="6"
+                   style="text-align: center; font-size: 1.2rem; letter-spacing: 2px;">
+        </div>
+        <button type="submit" class="btn" style="width: 100%;">
+            🔐 Войти с кодом
+        </button>
+    </form>
+
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'login' %}" class="btn btn-secondary">
+            ← Назад к выбору входа
+        </a>
+    </div>
+</div>
+
+<script>
+document.getElementById('telegramCodeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const code = formData.get('telegram_code');
+
+    fetch('/telegram-code-login/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            telegram_code: code
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            window.location.href = data.redirect_url;
+        } else {
+            alert('Ошибка: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Ошибка сети: ' + error);
+    });
+});
+</script>
+{% endblock %}

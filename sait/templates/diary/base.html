@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дневник путешественника | ВТБ</title>
+    <title>Дневник путешественника</title>
     <style>
         * {
             margin: 0;
@@ -637,28 +637,39 @@
 
         <!-- Модальное окно выбора способа входа -->
         <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-            <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 400px; width: 90%;">
-                <h2 style="color: #1E4388; margin-bottom: 1.5rem; text-align: center;">Выберите способ входа</h2>
+            <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 400px; width: 90%; box-shadow: 0 8px 32px rgba(30, 67, 136, 0.1);">
+                <h2 style="color: #1E4388; margin-bottom: 1.5rem; text-align: center; font-size: 1.5rem;">Выберите способ входа</h2>
 
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <a href="{% url 'login' %}" class="btn" style="text-align: center;">
+                    <!-- Кнопка логина -->
+                    <a href="{% url 'login' %}"
+                       style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%); color: white; text-decoration: none; border-radius: 12px; border: none; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1rem; box-shadow: 0 4px 15px rgba(30, 67, 136, 0.3);">
                         👤 Логин и пароль
                     </a>
 
+                    <!-- Кнопка Яндекс -->
                     <a href="{% url 'social:begin' 'yandex-oauth2' %}"
-                       class="btn"
-                       style="background: #FFCC00; color: #000; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                       style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%); color: white; text-decoration: none; border-radius: 12px; border: none; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1rem; box-shadow: 0 4px 15px rgba(30, 67, 136, 0.3);">
                         <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIyQzE3LjUyMjggMjIgMjIgMTcuNTIyOCAyMiAxMkMyMiA2LjQ3NzE1IDE3LjUyMjggMiAxMiAyQzYuNDc3MTUgMiAyIDYuNDc3MTUgMiAxMkMyIDE3LjUyMjggNi40NzcxNSAyMiAxMiAyMloiIGZpbGw9IiNmZmNjMDAiLz4KPHBhdGggZD0iTTEyLjU1MjUgMTUuNDk1N0g5LjY0N1Y4LjUwNDM0SDEyLjU3ODVDMTMuODQ3MyA4LjUwNDM0IDE0LjcyNTIgOC44ODQ1NiAxNS4yMTIyIDkuNjQ1MDJDMTUuNjk5MiAxMC40MDU0OCAxNS45NDI3IDExLjQ3MTcgMTUuOTQyNyAxMi43NDM4QzE1Ljk0MjcgMTMuOTc4MyAxNS43MTM2IDE1LjAwODggMTUuMjU1NCAxNS44MzUzQzE0Ljc5NzIgMTYuNjYxOCAxMy45NDQ3IDE3LjA3NSAxMi43OTc5IDE3LjA3NUMxMi4wNDY5IDE3LjA3NSAxMS40Mjg3IDE2LjkxNDUgMTAuOTQzNCAxNi41OTM1QzEwLjQ1ODEgMTYuMjcyNSAxMC4wOTU3IDE1Ljg0NzcgOS44NTYyIDE1LjMxOTJMMTAuOTU5NyAxNC40NDc2QzExLjE0MjEgMTQuODMzOCAxMS40Mzc1IDE1LjEyNDUgMTEuODQ1NyAxNS4zMTk4QzEyLjI1MzkgMTUuNTE1MSAxMi43MTA5IDE1LjYxMjggMTMuMjE2OCAxNS42MTI4QzEzLjk1MzEgMTUuNjEyOCAxNC41MDQ5IDE1LjM3NzcgMTQuODY3MiAxNC45MDc1QzE1LjIyOTUgMTQuNDM3MyAxNS40MTA2IDEzLjc2NjEgMTUuNDEwNiAxMi44OTM4QzE1LjQxMDYgMTIuMDQxNyAxNS4yNDUxIDExLjQxMzUgMTQuOTE0MSAxMS4wMDk0QzE0LjU4MzEgMTAuNjA1MyAxNC4wNzE5IDEwLjQwMzMgMTMuMzgwNCAxMC40MDMzSDEwLjc0NzRWMTEuOTYwMkgxMi41NTI1VjEyLjk5ODdIMTAuNzQ3NFYxNC40NDc2SDEyLjU1MjVWMTUuNDk1N1oiIGZpbGw9IiMwMDAwMDAiLz4KPC9zdmc+"
                          alt="Yandex"
-                         style="width: 20px; height: 20px;">
-                        Яндекс ID
+                         style="width: 20px; height: 20px; filter: brightness(0) invert(1);">
+                        Войти через Яндекс
+                    </a>
+
+                    <!-- Кнопка Telegram -->
+                    <a href="{% url 'telegram_auth' %}"
+                       style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%); color: white; text-decoration: none; border-radius: 12px; border: none; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1rem; box-shadow: 0 4px 15px rgba(30, 67, 136, 0.3);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="filter: brightness(0) invert(1);">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.158c-.174-.761-1.003-1.141-1.752-.768l-10.5 5.25c-.535.268-.793.848-.623 1.396.17.548.696.911 1.268.911.115 0 .232-.019.345-.059l2.413-.804v3.851c0 .827.673 1.5 1.5 1.5s1.5-.673 1.5-1.5v-3.851l5.918 2.472c.749.373 1.578-.007 1.752-.768.174-.761-.207-1.578-.956-1.951l-5.25-2.625 5.25-2.625c.749-.373 1.13-1.19.956-1.951z"/>
+                        </svg>
+                        Войти через Telegram
                     </a>
                 </div>
 
+                <!-- Кнопка отмены -->
                 <button onclick="hideLoginOptions()"
-                        class="btn btn-secondary"
-                        style="width: 100%; margin-top: 1rem;">
-                    Отмена
+                        style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; background: linear-gradient(135deg, #1E4388 0%, #152F5D 100%); color: white; text-decoration: none; border-radius: 12px; border: none; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 1rem; box-shadow: 0 4px 15px rgba(30, 67, 136, 0.3); width: 100%; margin-top: 1rem;">
+                    ✖ Отмена
                 </button>
             </div>
         </div>
@@ -677,6 +688,22 @@
                 if (e.target === this) {
                     hideLoginOptions();
                 }
+            });
+
+            // Добавляем hover эффекты для всех кнопок в модальном окне
+            document.addEventListener('DOMContentLoaded', function() {
+                const modalButtons = document.querySelectorAll('#loginModal a, #loginModal button');
+                modalButtons.forEach(button => {
+                    button.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-2px)';
+                        this.style.boxShadow = '0 6px 20px rgba(30, 67, 136, 0.4)';
+                    });
+
+                    button.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = '0 4px 15px rgba(30, 67, 136, 0.3)';
+                    });
+                });
             });
         </script>
     {% endif %}
